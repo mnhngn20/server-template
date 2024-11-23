@@ -1,16 +1,38 @@
-import express from "express";
 import dotenv from "dotenv";
-
+import express, { Express } from "express";
 dotenv.config();
 
-const port = process.env.PORT;
+// const mode = process.env.MODE;
+let server: Express | null = null;
 
-const app = express();
+export function createServer() {
+  const app = express();
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
+  app.get("/", (req, res) => {
+    res.send("hello world");
+  });
 
-app.listen(port, () => {
-  console.log("Server listening on port ", port);
-});
+  return app;
+}
+
+// if (mode === "development") {
+//   server = createServer();
+//   server.listen(3000, () => {
+//     console.log("Server listening on port");
+//   });
+// }
+
+export async function handler(event: any) {
+  // if (!server) {
+  //   server = createServer();
+  // }
+
+  console.log("hello mother fuckers: ", event);
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: "Hello from Lambda Minh!",
+    }),
+  };
+}
