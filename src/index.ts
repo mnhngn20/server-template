@@ -1,12 +1,18 @@
+import "reflect-metadata";
 import dotenv from "dotenv";
 import express, { Express } from "express";
+import { dataSource } from "./db";
 dotenv.config();
 
-// const mode = process.env.MODE;
+const mode = process.env.MODE;
 let server: Express | null = null;
 
-export function createServer() {
+async function createServer() {
   const app = express();
+
+  await dataSource.initialize();
+
+  console.log("Successfully connect to database");
 
   app.get("/", (req, res) => {
     res.send("hello world");
@@ -15,12 +21,13 @@ export function createServer() {
   return app;
 }
 
-// if (mode === "development") {
-//   server = createServer();
-//   server.listen(3000, () => {
-//     console.log("Server listening on port");
-//   });
-// }
+if (mode === "development") {
+  createServer().then((server) => {
+    server.listen(3000, () => {
+      console.log("Server listening on port");
+    });
+  });
+}
 
 export async function handler(event: any) {
   // if (!server) {
