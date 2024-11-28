@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./src/index.ts",
-    "build": "swc src -d dist --source-maps && zip -r dist/api.zip dist/ node_modules/",
+    "build": "swc src -d dist --source-maps && yarn install --production --modules-folder dist/node_modules && zip -r dist/api.zip dist/ && rm -rf dist/node_modules",
     "manual-deploy": "chmod +x scripts/manual-deploy.sh && scripts/manual-deploy.sh",
     "init-db": "chmod +x scripts/init-db.sh && scripts/init-db.sh",
     "migration-create": "chmod +x scripts/create-migration.sh && ./scripts/create-migration.sh",
