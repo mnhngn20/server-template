@@ -1,20 +1,15 @@
-import { dataSource } from "../src/db/index";
+import { dataSource } from "../src/db/dataSource";
 
 async function runMigrations() {
   await dataSource.initialize();
 
+  // Add extension for generating id postgresql
   await dataSource.query(`
     CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
   `);
 
-  console.log(
-    await dataSource.query(`
-    SELECT * FROM pg_available_extensions WHERE name = 'uuid-ossp'
-  `)
-  );
-
   await dataSource.runMigrations({
-    transaction: "all",
+    transaction: "each",
   });
 }
 

@@ -1,7 +1,8 @@
 import "reflect-metadata";
 import dotenv from "dotenv";
 import express, { Express } from "express";
-import { dataSource } from "./db";
+import { dataSource } from "@/db/dataSource";
+import { APP_CONFIG } from "./config";
 dotenv.config();
 
 const mode = process.env.MODE;
@@ -12,7 +13,7 @@ async function createServer() {
 
   await dataSource.initialize();
 
-  console.log("Successfully connect to database");
+  console.log("Successfully connect to database!");
 
   app.get("/", (req, res) => {
     res.send("hello world");
@@ -23,16 +24,16 @@ async function createServer() {
 
 if (mode === "development") {
   createServer().then((server) => {
-    server.listen(3000, () => {
-      console.log("Server listening on port");
+    server.listen(APP_CONFIG.devPort, () => {
+      console.log("Server listening on port ", APP_CONFIG.devPort);
     });
   });
 }
 
 export async function handler(event: any) {
-  // if (!server) {
-  //   server = createServer();
-  // }
+  if (!server) {
+    server = await createServer();
+  }
 
   console.log("hello mother fuckers: ", event);
 
