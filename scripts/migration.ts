@@ -1,3 +1,4 @@
+import "@/config/dotenv";
 import { dataSource } from "../src/db/dataSource";
 
 async function runMigrations() {

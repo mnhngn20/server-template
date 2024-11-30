@@ -9,7 +9,7 @@
     "manual-deploy": "chmod +x scripts/manual-deploy.sh && scripts/manual-deploy.sh",
     "init-db": "chmod +x scripts/init-db.sh && scripts/init-db.sh",
     "migration-create": "chmod +x scripts/create-migration.sh && ./scripts/create-migration.sh",
-    "migration-run": "yarn ts-node scripts/migration.ts"
+    "migration-run": "yarn ts-node -r tsconfig-paths/register scripts/migration.ts"
   },
   "author": "",
   "license": "ISC",

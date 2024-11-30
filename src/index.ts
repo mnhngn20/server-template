@@ -1,9 +1,8 @@
 import "reflect-metadata";
-import dotenv from "dotenv";
+import "@/config/dotenv";
 import express, { Express } from "express";
 import { dataSource } from "@/db/dataSource";
 import { APP_CONFIG } from "./config";
-dotenv.config();
 
 const mode = process.env.MODE;
 let server: Express | null = null;
