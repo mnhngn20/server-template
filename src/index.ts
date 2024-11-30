@@ -1,45 +1,64 @@
 import "reflect-metadata";
 import "@/config/dotenv";
-import express, { Express } from "express";
+import express from "express";
 import { dataSource } from "@/db/dataSource";
 import { APP_CONFIG } from "./config";
+import { createServer, proxy } from "aws-serverless-express";
+import { APIGatewayProxyEvent, Context } from "aws-lambda";
 
-const mode = process.env.MODE;
-let server: Express | null = null;
+import { Server } from "http";
 
-async function createServer() {
+let server: Server | null = null;
+
+async function initExpressApp() {
   const app = express();
+
+  app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    next();
+  });
 
   await dataSource.initialize();
 
   console.log("Successfully connect to database!");
 
   app.get("/", (req, res) => {
+    console.log("i was called: dit con me....?");
     res.send("hello world");
   });
 
   return app;
 }
 
-if (mode === "development") {
-  createServer().then((server) => {
-    server.listen(APP_CONFIG.devPort, () => {
-      console.log("Server listening on port ", APP_CONFIG.devPort);
-    });
-  });
-}
-
-export async function handler(event: any) {
+async function bootstrapServer() {
   if (!server) {
-    server = await createServer();
+    const app = await initExpressApp();
+    server = createServer(app);
   }
 
-  console.log("hello mother fuckers: ", event);
+  return server;
+}
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: "Hello from Lambda Minh!",
-    }),
-  };
+if (APP_CONFIG.mode === "development") {
+  initExpressApp()
+    .then((app) => {
+      app.listen(APP_CONFIG.devPort, () => {
+        console.log("Server listening on port ", APP_CONFIG.devPort);
+      });
+    })
+    .catch((err) => {
+      console.error("Failed to start development server:", err);
+    });
+}
+
+export async function handler(event: APIGatewayProxyEvent, context: Context) {
+  const server = await bootstrapServer();
+
+  const result = await proxy(server, event, context, "PROMISE").promise;
+
+  console.log("result from server", result);
+
+  return result;
 }

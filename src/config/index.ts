@@ -5,4 +5,5 @@ export const APP_CONFIG = {
   dbUser: process.env.PG_USER,
   dbHost: process.env.PG_HOST,
   dbName: process.env.PG_DATABASE,
+  mode: process.env.MODE || "production",
 };
