@@ -47,25 +47,14 @@ jobs:
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build and Push Docker Image
+      - name: Build Docker image
         run: |
-          docker buildx build \
-            --platform linux/arm64 \
-            --file Dockerfile.api \
-            --tag ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/test/server-template:latest \
-            --push .
+          docker build -t server-template:latest -f Dockerfile.api .
 
-      # - name: Build Docker image
-      #   run: |
-      #     docker buildx build --platform=linux/arm64 -t server-template:latest -f Dockerfile.api .
-
-      # - name: Tag and push Docker image to ECR
-      #   run: |
-      #     docker tag server-template:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/test/server-template:latest
-      #     docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/test/server-template:latest
+      - name: Tag and push Docker image to ECR
+        run: |
+          docker tag server-template:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/test/server-template:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/test/server-template:latest
 
       - name: Update Lambda function code
         run: |
