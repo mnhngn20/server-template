@@ -26,7 +26,7 @@ async function initExpressApp() {
 
   app.get("/", (req, res) => {
     console.log("i was called: dit con me....?");
-    res.send("hello world");
+    res.send("hello world 2");
   });
 
   return app;
