@@ -49,7 +49,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t server-template:latest -f Dockerfile.api .
+          docker build --platform=linux/arm64 -t server-template:latest -f Dockerfile.api .
 
       - name: Tag and push Docker image to ECR
         run: |
