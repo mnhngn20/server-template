@@ -62,10 +62,10 @@ jobs:
       #   run: |
       #     docker buildx build --platform=linux/arm64 -t server-template:latest -f Dockerfile.api .
 
-      - name: Tag and push Docker image to ECR
-        run: |
-          docker tag server-template:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/test/server-template:latest
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/test/server-template:latest
+      # - name: Tag and push Docker image to ECR
+      #   run: |
+      #     docker tag server-template:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/test/server-template:latest
+      #     docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/test/server-template:latest
 
       - name: Update Lambda function code
         run: |
