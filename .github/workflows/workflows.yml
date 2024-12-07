@@ -60,4 +60,5 @@ jobs:
         run: |
           aws lambda update-function-code \
             --function-name secondServerTemplateFn \
-            --image-uri ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/test/server-template:latest
+            --image-uri ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/test/server-template:latest \
+            --architectures x86_64
