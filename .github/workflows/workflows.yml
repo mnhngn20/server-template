@@ -53,11 +53,11 @@ jobs:
 
       - name: Tag and push Docker image to ECR
         run: |
-          docker tag server-template:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/server-template:latest
-          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/server-template:latest
+          docker tag server-template:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/test/server-template:latest
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/test/server-template:latest
 
       - name: Update Lambda function code
         run: |
           aws lambda update-function-code \
             --function-name server-template \
-            --image-uri $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/server-template:latest
+            --image-uri $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/test/server-template:latest
