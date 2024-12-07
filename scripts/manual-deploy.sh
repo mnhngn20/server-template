@@ -1,7 +1,7 @@
 
 echo "Building application...."
 
-yarn build
+yarn manual-build
 
 echo "Build Done!"
 
