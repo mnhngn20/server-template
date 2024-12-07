@@ -1,2 +1,11 @@
-FROM postgres
+FROM public.ecr.aws/lambda/nodejs:18
 
+WORKDIR ${LAMBDA_TASK_ROOT}
+
+COPY package.json yarn.lock ./
+
+RUN npm install yarn -g && yarn install --production
+
+COPY dist/ .
+
+CMD ["src/index.handler"]
