@@ -54,7 +54,7 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/arm64 \
-            -f Dockerfile.api . \
+            --f Dockerfile.api \
             --tag ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/test/server-template:latest \
             --push .
 
