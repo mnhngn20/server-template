@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Jobs
 
 on:
   push:
@@ -36,6 +36,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup
     steps:
+      - name: Install Dependencies
+        uses: ./.github/workflows/install.yml
+        with:
+        node-version: "18"
       - name: Checkout code
         uses: actions/checkout@v3
 
