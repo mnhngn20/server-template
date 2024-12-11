@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Dependencies
-        uses: ./.github/workflows/setup.yml
+        uses: ./.github/reuseable-workflows/setup.yml
         with:
           node-version: "18"
 
