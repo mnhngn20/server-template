@@ -1,11 +1,10 @@
 name: Install
 
-on:
-  workflow_call:
-    inputs:
-      node-version:
-        required: true
-        type: string
+description: Sets up Node.js environment with Yarn and installs dependencies.
+inputs:
+  node-version:
+    description: The Node.js version to use.
+    required: true
 
 runs:
   using: "composite"
