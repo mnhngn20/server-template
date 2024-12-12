@@ -12,16 +12,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install Dependencies
-        uses: ./.github/actions/setup
+      - name: Checkout Code & Install Dependencies
+        uses: ./.github/actions/checkout-and-setup
         with:
           node-version: "18"
 
       - name: Build with SWC
         run: yarn build
+
+      - name: Cache Dist Folder
+        uses: actions/cache@v3
+        with:
+          path: dist/
+          key: ${{ runner.os }}-dist-${{ github.run_id }}
 
   configure-aws:
     runs-on: ubuntu-latest
@@ -45,6 +48,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Restore Cached Dist Folder
+        uses: actions/cache@v3
+        with:
+          path: dist/
+          key: ${{ runner.os }}-dist-${{ github.run_id }}
 
       - name: Build Docker image
         run: |
